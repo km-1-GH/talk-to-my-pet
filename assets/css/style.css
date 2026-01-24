@@ -1,0 +1,7 @@
+@import url('./avater.css');
+@import url('./menu.css');
+@import url('./speaker.css');
+
+body {
+    margin: 0;
+}
