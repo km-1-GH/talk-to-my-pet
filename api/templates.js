@@ -1,24 +1,5 @@
-export function getWords() {
-    const json = localStorage.getItem('words')
-    if (!json) {
-        return []
-    }
-    return JSON.parse(json)
-}
-
-export function putWords(words) {
-    const json = JSON.stringify(words)
-    localStorage.setItem('words', json)
-}
-
-export async function getWordCategories() {
-    const response = await fetch('/api/word-categories')
-    const wordCategories = await response.json()
-    return wordCategories
-}
-
-export function getTemplates() {
-    return [
+export async function GET() {
+    return new Response(JSON.stringify([
         { id: 1, content: "おはようからおやすみまで「{言葉}」でお送りしています", wordCategoryId: 1, motion: 'idle' },
         { id: 2, content: "第一声が「{言葉}」？それもう様式美でしょ", wordCategoryId: 1, motion: 'shifty' },
         { id: 3, content: "今日も元気に「{言葉}」していこうな", wordCategoryId: 1, motion: 'idle' },
@@ -35,5 +16,5 @@ export function getTemplates() {
         { id: 14, content: "地図に載ってないけど有名な「{言葉}」", wordCategoryId: 4, motion: 'shifty' },
         { id: 15, content: "行くとだいたい迷う「{言葉}」", wordCategoryId: 4, motion: 'confused' },
         { id: 16, content: "なぜか語られがちな場所「{言葉}」", wordCategoryId: 4, motion: 'rolling' },
-    ]
+    ]))
 }
