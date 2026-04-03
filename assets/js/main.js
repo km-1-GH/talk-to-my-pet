@@ -6,9 +6,9 @@ import * as speaker from './speaker.js'
 import * as storage from './storage.js'
 
 async function main() {
-    const words = storage.getWords()
+    const words = await storage.getWords()
     const wordCategories = await storage.getWordCategories()
-    const templates = storage.getTemplates()
+    const templates = await storage.getTemplates()
 
     avater.view.addEventListener('animal-click', () => {
         menu.open()
@@ -42,10 +42,11 @@ async function main() {
 
         await speaker.start(`「${wordCategory.name}」の分野を選びました`)
 
-        words.push({ content, wordCategoryId: wordCategory.id })
-
-        storage.putWords(words)
-
+        
+        const newWord = { content, wordCategoryId: wordCategory.id }
+        await storage.addWord(newWord)
+        
+        words.push(newWord)
         console.log({ words })
     })
 }
