@@ -4,11 +4,6 @@ export async function getWords() {
     return words
 }
 
-export function putWords(words) {
-    const json = JSON.stringify(words)
-    localStorage.setItem('words', json)
-}
-
 export async function getWordCategories() {
     const response = await fetch('/api/word-categories')
     const wordCategories = await response.json()

@@ -3,12 +3,14 @@ import * as menu from './menu.js'
 import * as inputWordDialog from './inputWordDialog.js'
 import * as selectWordCategoryDialog from './selectWordCategoryDialog.js'
 import * as speaker from './speaker.js'
-import * as storage from './storage.js'
+import * as api from './api.js'
 
 async function main() {
-    const words = await storage.getWords()
-    const wordCategories = await storage.getWordCategories()
-    const templates = await storage.getTemplates()
+    const words = await api.getWords()
+    const wordCategories = await api.getWordCategories()
+    const templates = await api.getTemplates()
+
+    console.log(words)
 
     avater.view.addEventListener('animal-click', () => {
         menu.open()
@@ -44,7 +46,7 @@ async function main() {
 
         
         const newWord = { content, wordCategoryId: wordCategory.id }
-        await storage.addWord(newWord)
+        await api.addWord(newWord)
         
         words.push(newWord)
         console.log({ words })

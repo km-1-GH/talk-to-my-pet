@@ -1,17 +1,42 @@
+import { getSupabaseClient } from "./supabase.js"
+
 export async function GET() {
-    return new Response(JSON.stringify([
-        { id: 1, content: 'おざまーっす', wordCategoryId: 1 },
-        { id: 2, content: 'くわいの煮物', wordCategoryId: 2 },
-        { id: 3, content: 'ドラゴンブレイク', wordCategoryId: 3 },
-        { id: 4, content: '秘密基地', wordCategoryId: 4 },
-    ]))
+    const supabase = getSupabaseClient()
+
+    const { data } = await supabase
+        .from('words')
+        .select('*')
+        .order('id')
+
+    const words = data.map(row => ({
+        id: row.id,
+        content: row.content,
+        wordCategoryId: row.word_category_id
+    }))
+
+    return new Response(JSON.stringify(words))
 }
 
-export async function POST(req) {
-    const data = await req.json()
-    console.log('新しい言葉を受け取りました:', data)
 
-    // TODO: データベースに保存する処理
+export async function POST(request) {
+    const supabase = getSupabaseClient()
 
-    return new Response(JSON.stringify({ id: 5, ...data }), { status: 201 })
+    const body = await request.json()
+    console.log('新しい言葉を受け取りました:', body)
+
+    // データベースに保存する処理
+    const { data } = await supabase
+        .from('words')
+        .insert([
+            { content: body.content, word_category_id: body.wordCategoryId }
+        ])
+        .select()
+        .single()
+
+    const word = {
+        content: data.content,
+        wordCategoryId: data.word_category_id
+    }
+
+    return new Response(JSON.stringify(word))
 }
