@@ -6,11 +6,7 @@ import * as speaker from './speaker.js'
 import * as api from './api.js'
 
 async function main() {
-    const words = await api.getWords()
     const wordCategories = await api.getWordCategories()
-    const templates = await api.getTemplates()
-
-    console.log(words)
 
     avater.view.addEventListener('animal-click', () => {
         menu.open()
@@ -20,13 +16,10 @@ async function main() {
         console.log('動物と話す')
         menu.close()
 
-        const word = words[Math.floor(Math.random() * words.length)]
-        const categoryTemplates = templates.filter(template => template.wordCategoryId == word.wordCategoryId)
-        const template = categoryTemplates[Math.floor(Math.random() * categoryTemplates.length)]
-        const message = template.content.replace('{言葉}', word.content)
+        const line = await api.createLine()
 
-        avater.view.changeAnimalMotion(template.motion)
-        await speaker.start(message)
+        avater.view.changeAnimalMotion(line.motion)
+        await speaker.start(line.message)
         avater.view.changeAnimalMotion('idle')
     })
 

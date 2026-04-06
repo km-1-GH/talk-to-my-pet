@@ -1,21 +1,21 @@
 import { getSupabaseClient } from "./supabase.js"
 
-export async function GET() {
-    const supabase = getSupabaseClient()
+// export async function GET() {
+//     const supabase = getSupabaseClient()
 
-    const { data } = await supabase
-        .from('words')
-        .select('*')
-        .order('id')
+//     const { data } = await supabase
+//         .from('words')
+//         .select('*')
+//         .order('id')
 
-    const words = data.map(row => ({
-        id: row.id,
-        content: row.content,
-        wordCategoryId: row.word_category_id
-    }))
+//     const words = data.map(row => ({
+//         id: row.id,
+//         content: row.content,
+//         wordCategoryId: row.word_category_id
+//     }))
 
-    return new Response(JSON.stringify(words))
-}
+//     return new Response(JSON.stringify(words))
+// }
 
 
 export async function POST(request) {

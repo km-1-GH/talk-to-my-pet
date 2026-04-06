@@ -1,19 +1,8 @@
-export async function getWords() {
-    const response = await fetch('/api/words')
-    const words = await response.json()
-    return words
-}
 
 export async function getWordCategories() {
     const response = await fetch('/api/word-categories')
     const wordCategories = await response.json()
     return wordCategories
-}
-
-export async function getTemplates() {
-    const response = await fetch('/api/templates')
-    const templates = await response.json()
-    return templates
 }
 
 export async function addWord(word) {
@@ -26,4 +15,13 @@ export async function addWord(word) {
     })
     const newWord = await response.json()
     return newWord
+}
+
+export async function createLine() {
+    const response = await fetch('/api/lines', {
+        method: 'POST'
+    })
+
+    const line = await response.json()
+    return line
 }
