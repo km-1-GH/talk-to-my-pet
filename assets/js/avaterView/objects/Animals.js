@@ -1,60 +1,66 @@
 import * as THREE from 'three';
 
+const animalTypes = ['sparrow', 'gecko', 'herring', 'taipan', 'muskrat', 'pudu', 'colobus', 'inkfish']
+
+const animalType = animalTypes[Math.floor(Math.random() * animalTypes.length)]
+
 export const ObjectNameByMotionName = Object.freeze({
   // SPARROW
-  'idle': 'Rig',
-  'attack': 'Rig009',
-  'rolling': 'Rig023',
-  'confused': 'Sparrow_LOD1004',
-  'damaged': 'Sparrow_LOD1005',
-  'shifty': 'Sparrow_LOD1006',
+  'sparrow-idle': 'Rig',
+  'sparrow-attack': 'Rig009',
+  'sparrow-rolling': 'Rig023',
+  'sparrow-confused': 'Sparrow_LOD1004',
+  'sparrow-damaged': 'Sparrow_LOD1005',
+  'sparrow-shifty': 'Sparrow_LOD1006',
   // GECKO
-  'gecko-1': 'Rig001',
-  'gecko-2': 'Rig010',
-  'gecko-3': 'Rig025',
-  'gecko-4': 'Gecko_LOD1003',
-  'gecko-5': 'Gecko_LOD1004',
+  'gecko-idle': 'Rig001',
+  'gecko-attack': 'Rig010',
+  'gecko-shifty': 'Rig025',
+  'gecko-damaged': 'Gecko_LOD1003',
+  'gecko-rolling': 'Gecko_LOD1004',
+  'gecko-confused': 'Gecko_LOD1004',
   // HERRING
-  'herring-1': 'Rig002',
-  'herring-2': 'Rig011',
-  'herring-3': 'Rig018',
+  'herring-idle': 'Rig002',
+  'herring-confused': 'Rig011',
+  'herring-attack': 'Rig018',
   'herring-4': 'Rig027',
-  'herring-5': 'Herring_LOD1004',
-  'herring-6': 'Herring_LOD1005',
-  'herring-7': 'Herring_LOD1006',
+  'herring-damaged': 'Herring_LOD1004',
+  'herring-rolling': 'Herring_LOD1005',
+  'herring-shifty': 'Herring_LOD1006',
   // TAIPAN
-  'taipan-1': 'Rig003',
-  'taipan-2': 'Rig012',
-  'taipan-3': 'Rig026',
-  'taipan-4': 'Taipan_LOD1003',
-  'taipan-5': 'Taipan_LOD1005',
+  'taipan-idle': 'Rig003',
+  'taipan-attack': 'Rig012',
+  'taipan-rolling': 'Rig026',
+  'taipan-damaged': 'Taipan_LOD1003',
+  'taipan-confused': 'Taipan_LOD1005',
+  'taipan-shifty': 'Taipan_LOD1005',
   // MUSKRAT
-  'muskrat-1': 'Rig004',
-  'muskrat-2': 'Rig013',
-  'muskrat-3': 'Rig022',
-  'muskrat-4': 'Rig024',
-  'muskrat-5': 'Muskrat_LOD1004',
-  'muskrat-6': 'Muskrat_LOD1005',
-  'muskrat-7': 'Muskrat_LOD1006',
+  'muskrat-idle': 'Rig004',
+  'muskrat-attack': 'Rig013',
+  'muskrat-rolling': 'Rig022',
+  'muskrat-damaged': 'Rig024',
+  'muskrat-shifty': 'Muskrat_LOD1004',
+  'muskrat-confused': 'Muskrat_LOD1005',
+//   'muskrat-shifty': 'Muskrat_LOD1006',
   // PUDU
-  'pudu-1': 'Rig005',
-  'pudu-2': 'Rig014',
-  'pudu-3': 'Rig020',
-  'pudu-4': 'Pudu_LOD1003',
-  'pudu-5': 'Pudu_LOD1004',
+  'pudu-idle': 'Rig005',
+  'pudu-attack': 'Rig014',
+  'pudu-rolling': 'Rig020',
+  'pudu-damaged': 'Pudu_LOD1003',
+  'pudu-confused': 'Pudu_LOD1004',
   // COLOBUS
-  'colobus-1': 'Rig006',
-  'colobus-2': 'Rig015',
-  'colobus-3': 'Rig021',
-  'colobus-4': 'Colobus_LOD1003',
-  'colobus-5': 'Colobus_LOD1004',
-  'colobus-6': 'Colobus_LOD1005',
+  'colobus-idle': 'Rig006',
+  'colobus-attack': 'Rig015',
+  'colobus-rolling': 'Rig021',
+  'colobus-damaged': 'Colobus_LOD1003',
+  'colobus-confused': 'Colobus_LOD1004',
+  'colobus-shifty': 'Colobus_LOD1005',
   // INKFISH
-  'inkfish-1': 'Rig007',
-  'inkfish-2': 'Rig016',
-  'inkfish-3': 'Rig019',
-  'inkfish-4': 'Inkfish_LOD1003',
-  'inkfish-5': 'Inkfish_LOD1004',
+  'inkfish-idle': 'Rig007',
+  'inkfish-attack': 'Rig016',
+  'inkfish-rolling': 'Rig019',
+  'inkfish-damaged': 'Inkfish_LOD1003',
+  'inkfish-confused': 'Inkfish_LOD1004',
 })
 
 const ANIMAL = Object.freeze({
@@ -159,7 +165,16 @@ export default class Animals extends EventTarget {
   /**
    * @param {[keyof typeof ObjectNameByMotionName]} motion
    */
-  changeMotion(motion) {
+  changeMotion(motionName) {
+    let motion = `${animalType}-${motionName}`;
+    if (!ObjectNameByMotionName[motion]) {
+        motion = `${animalType}-idle`;
+    }
+
+    // dev
+    // motion = 'muskrat-7';
+    console.log({ motion })
+
     const visibleObjectName = ObjectNameByMotionName[motion];
 
     for (const child of this.rootNode.children) {
